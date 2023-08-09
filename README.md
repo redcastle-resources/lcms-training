@@ -1,10 +1,10 @@
 # LCMS Training
 
-Notebooks to accompany the Google QuickLabs Landscape Change Monitoring System (LCMS) training
+Notebooks to accompany the Google QwikLabs Landscape Change Monitoring System (LCMS) training
 
 ## Description
 
-These notebooks are intended to be used as part of the Google Quicklabs LCMS training. They are intended to be run in Vertex AI Workbench, but can also run in Google Colab. They run through the basic workflow of creating LCMS outputs. 
+These notebooks are intended to be used as part of the Google Quwiklabs LCMS training. They are intended to be run in Vertex AI Workbench, but can also run in Google Colab. They run through the basic workflow of creating LCMS outputs. 
 
 ## Getting Started
 
