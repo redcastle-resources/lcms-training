@@ -95,7 +95,7 @@ def producersAccuracyXu(reference_class, assessment_class):
 # strataYuFrame is a dataframe with the strata values in one column and the yu values in the second
 # OR it has 'reference_class' and 'map_class' columns instead of yu for balanced accuracy and kappa
 def population_mean(strataDict, strataYuFrame, metric, multiclass = False):
-    print(metric)
+    # print(metric)
     
     numerator_values = []
     denominator_values = []
@@ -122,7 +122,7 @@ def population_mean(strataDict, strataYuFrame, metric, multiclass = False):
 
             else:
                 sample_mean = thisStrat['yu'].sum() / n_h_star # yh bar
-            print('Stratum '+str(h)+':', sample_mean)
+            # print('Stratum '+str(h)+':', sample_mean)
             #print('n_h_star', n_h_star) 
 
             numerator_values.append(N_h_star * sample_mean)
@@ -136,13 +136,13 @@ def population_mean(strataDict, strataYuFrame, metric, multiclass = False):
             denominator_values.append(N_h_star)
     weights = []
     for i in range(0, len(numerator_values)):
-        print('Stratum '+str(i+1)+' Weight:', numerator_values[i]/np.sum(denominator_values))
+        # print('Stratum '+str(i+1)+' Weight:', numerator_values[i]/np.sum(denominator_values))
         weights.append(numerator_values[i]/np.sum(denominator_values))
-    print('Numerator Values: ', numerator_values)
-    print('Weights: ', weights)
-    print('Weights sum:', np.sum(weights))
+    # print('Numerator Values: ', numerator_values)
+    # print('Weights: ', weights)
+    # print('Weights sum:', np.sum(weights))
     out = np.sum(numerator_values) / np.sum(denominator_values)
-    print('Out sum', out)
+    # print('Out sum', out)
     return out
 
 # Stehman et al. Equation 25
@@ -189,7 +189,7 @@ def standard_error(variance):
 # and the total number of pixels in each stratum as values (N_h*)
 # strataYuFrame is a dataframe with columns ['strata','yu','xu']
 def users_producers_ratio(strataDict, strataYuFrame, metric):
-    print(metric)
+    # print(metric)
     numerator_values = []
     denominator_values = []
     for h in strataDict.keys():
@@ -202,7 +202,7 @@ def users_producers_ratio(strataDict, strataYuFrame, metric):
         sample_mean_yu = thisStrat['yu'].sum() / n_h_star # yh bar
         sample_mean_xu = thisStrat['xu'].sum() / n_h_star # xh bar
 
-        print('Stratum '+h+': R=', sample_mean_yu/sample_mean_xu)
+        # print('Stratum '+str(h)+': R=', sample_mean_yu/sample_mean_xu)
 
         if not np.isnan(sample_mean_xu) and not np.isnan(sample_mean_yu):
             numerator_values.append(N_h_star * sample_mean_yu)
@@ -221,7 +221,7 @@ def get_overall_accuracy(reference_class, map_class, strata_class, strataDict):
     overall_accuracy = population_mean(strataDict, strataYuFrame, 'overall_accuracy')
     standard_error = np.sqrt(variance(strataDict, strataYuFrame)) 
     
-    print('Overall Accuracy: ', overall_accuracy, '+/-', standard_error)
+    # print('Overall Accuracy: ', overall_accuracy, '+/-', standard_error)
 
     return overall_accuracy, standard_error
 
@@ -234,7 +234,7 @@ def get_other_accuracy_metric(reference_class, map_class, strata_class, strataDi
     
     overall_metric = population_mean(strataDict, strataYuFrame, metric, multiClass)
     
-    print('Overall '+metric+': ', overall_metric)
+    # print('Overall '+metric+': ', overall_metric)
 
     return overall_metric
 
@@ -245,7 +245,7 @@ def get_users_producers_accuracy(reference_class, map_class, strata_class, strat
     usersError = {}
     producersError = {}
     for assessment_class in assessment_classes:
-        print('Class: ', assessment_class)
+        # print('Class: ', assessment_class)
         # Users Accuracy
         usersYuXuFrame = pd.DataFrame({'strata': strata_class, 
                             'yu': usersAccuracyYu(map_class, reference_class, assessment_class),
@@ -262,9 +262,9 @@ def get_users_producers_accuracy(reference_class, map_class, strata_class, strat
         usersError[assessment_class] = np.sqrt(variance(strataDict, usersYuXuFrame))
         producersError[assessment_class] = np.sqrt(variance(strataDict, producersYuXuFrame))
         
-        print('Users Accuracy for Class '+str(assessment_class)+': ', usersOut[assessment_class], '+/-', standard_error)
-        print('Producers Accuracy for Class '+str(assessment_class)+': ', producersOut[assessment_class], '+/-', standard_error)
-        print('')
+        # print('Users Accuracy for Class '+str(assessment_class)+': ', usersOut[assessment_class], '+/-', standard_error)
+        # print('Producers Accuracy for Class '+str(assessment_class)+': ', producersOut[assessment_class], '+/-', standard_error)
+        # print('')
     return usersOut, producersOut, usersError, producersError
 
 # Area Estimation
@@ -282,7 +282,7 @@ def get_area_estimation(reference_class, strata_class, strataDict, assessment_cl
         classVariance = variance(strataDict, strataYuFrame)
         errors[assessment_class] = np.sqrt(classVariance)
 
-        print('Estimated Area for Class '+str(assessment_class)+': ', areas[assessment_class])
+        # print('Estimated Area for Class '+str(assessment_class)+': ', areas[assessment_class])
         if np.isnan(np.sqrt(classVariance)):
             print('Check Variance')
             pdb.set_trace()
@@ -314,8 +314,8 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
     with parallel_backend('threading'):
         train_sizes, train_scores, test_scores = learning_curve(
             estimator, X, y, cv=cv, n_jobs=n_jobs, train_sizes=train_sizes, scoring=scoring, shuffle = True)
-    print('train sizes: ')
-    print(train_sizes)
+    # print('train sizes: ')
+    # print(train_sizes)
 
     train_scores_mean = np.mean(train_scores, axis=1)
     train_scores_std = np.std(train_scores, axis=1)
@@ -346,6 +346,7 @@ def get_write_stratified_accuracies(\
     strata_train,       # The strata of the same plots as above
     strataDict,         # Dictionary of the number of pixels in each stratum - defined in LCMSVariables - used for weighting
     assessment_classes, # Class names - used for looping through classes for users/producers accuracies and areas
+    assessment_class_names,
     method = '',        # This is just a run name, used for printing out accuracies in file. Not really used anymore
     accFile = None):    # Path of txt file you want to write the accuracies directly to file here.
 
@@ -366,22 +367,23 @@ def get_write_stratified_accuracies(\
     users, producers, usersError, producersError = get_users_producers_accuracy(y_train.to_numpy(), y_predictions, strata_train, strataDict, assessment_classes)
     areas, area_errors = get_area_estimation(y_train.to_numpy(), strata_train, strataDict, assessment_classes)                   
 
+    class_dict = dict(list(zip(assessment_classes,assessment_class_names)))
     # Print accuracy results
-    print(method+' - Accuracy: ', accuracy, '+/-', accuracy_error)
-    print(method+' - Balanced Accuracy: ', balanced_accuracy)
-    print(method+' - Kappa: ', kappa)
-    print(method+' - F1 Score: ', f1_score)
-    print(method+' - Users Accuracy: ')
-    for c in users.keys():
-        print('Class '+str(c)+': '+str(users[c]), '+/-', usersError[c])
-    print(method+' - Producers Accuracy: ') 
-    for c in producers.keys():
-        print('Class '+str(c)+': '+str(producers[c]), '+/-', producersError[c])                   
-    print()
-    print(method+' - Design-Based Area Estimation: ') 
-    for c in areas.keys():
-        print('Class '+str(c)+': '+str(areas[c]), '+/-', area_errors[c])                   
-    print()
+    # print(method+' - Accuracy: ', accuracy, '+/-', accuracy_error)
+    # print(method+' - Balanced Accuracy: ', balanced_accuracy)
+    # print(method+' - Kappa: ', kappa)
+    # print(method+' - F1 Score: ', f1_score)
+    # print(method+' - Users Accuracy: ')
+    # for c in users.keys():
+    #     print('Class '+str(c)+': '+str(users[c]), '+/-', usersError[c])
+    # print(method+' - Producers Accuracy: ') 
+    # for c in producers.keys():
+    #     print('Class '+str(c)+': '+str(producers[c]), '+/-', producersError[c])                   
+    # print()
+    # print(method+' - Design-Based Area Estimation: ') 
+    # for c in areas.keys():
+    #     print('Class '+str(c)+': '+str(areas[c]), '+/-', area_errors[c])                   
+    # print()
 
     # Write to File
     if accFile != None:
@@ -391,13 +393,13 @@ def get_write_stratified_accuracies(\
         accFile.write('F1 Score: '+str(f1_score)+'\n')
         accFile.write('Users Accuracy: \n')
         for c in users.keys():
-            accFile.write('Class '+str(c)+': '+str(users[c])+' +/- '+str(usersError[c])+'\n')
+            accFile.write('Class '+str(class_dict[c])+': '+str(users[c])+' +/- '+str(usersError[c])+'\n')
         accFile.write('Producers Accuracy: \n')
         for c in producers.keys():
-            accFile.write('Class '+str(c)+': '+str(producers[c])+' +/- '+str(producersError[c])+'\n')
+            accFile.write('Class '+str(class_dict[c])+': '+str(producers[c])+' +/- '+str(producersError[c])+'\n')
         accFile.write('Design-Based Area Estimation: \n')
         for c in areas.keys():
-            accFile.write('Class '+str(c)+': '+str(areas[c])+' +/- '+str(area_errors[c])+'\n')
+            accFile.write('Class '+str(class_dict[c])+': '+str(areas[c])+' +/- '+str(area_errors[c])+'\n')
     
     
     return accuracy, balanced_accuracy, users, producers, kappa, f1_score, areas, accuracy_error, usersError, producersError, area_errors
