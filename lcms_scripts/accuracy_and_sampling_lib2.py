@@ -403,7 +403,39 @@ def get_write_stratified_accuracies(\
     
     
     return accuracy, balanced_accuracy, users, producers, kappa, f1_score, areas, accuracy_error, usersError, producersError, area_errors
+###################################################
+# Function to get a weighted confusion matrix
+def getConfusionMatrix(ref,pred,strata_class, stratum_weights, strataDict,assessment_classes,labels,nan_value = -99):
+    # Set up labels
+    row_labels = labels.copy()
+    row_labels.append('Users Accuracy')
 
+    col_labels = labels.copy()
+    col_labels.append('Producers Accuracy')
+
+    # Get raw weighted confusion matrix
+    cm = metrics.confusion_matrix(ref,pred,sample_weight=stratum_weights)
+   
+    # Get accuracy metrics using Stehman 2014 methods
+    overall_accuracy, accuracy_error = get_overall_accuracy(ref.to_numpy(), pred, strata_class, strataDict)  
+
+    users, producers, usersError, producersError = get_users_producers_accuracy(ref, pred, strata_class, strataDict, assessment_classes)
+
+    # Format accuracies for table
+    users_acc = (np.array([list(producers.values())])*100).T
+    producers_acc = np.array(list(users.values()))*100
+    producers_acc = np.append(producers_acc,overall_accuracy*100)
+    
+    # Append accuracies
+    cm = np.concatenate((cm,users_acc),axis=1)
+    cm = np.concatenate((cm,[producers_acc]),axis=0).astype(int)#.astype(str)
+    
+    # Handle nan
+    cm[cm==-2147483648] = nan_value
+
+    # Convert to dataFrame
+    cm_df = pd.DataFrame(cm,columns=col_labels,index = row_labels)
+    return cm_df
 #---------------------------------Learning Curve------------------------
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=None, train_sizes=np.linspace(.1, 1.0, 5), scoring = 'f1'):
