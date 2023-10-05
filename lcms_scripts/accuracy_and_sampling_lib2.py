@@ -408,10 +408,10 @@ def get_write_stratified_accuracies(\
 def getConfusionMatrix(ref,pred,strata_class, stratum_weights, strataDict,assessment_classes,labels,nan_value = -99):
     # Set up labels
     row_labels = labels.copy()
-    row_labels.append("Producer's Accuracy")
+    row_labels.append("Producer's Accuracy (1 - omission error)")
 
     col_labels = labels.copy()
-    col_labels.append("User's Accuracy")
+    col_labels.append("User's Accuracy (1 - commission error)")
 
     # Get raw weighted confusion matrix
     cm = metrics.confusion_matrix(ref,pred,sample_weight=stratum_weights).T
