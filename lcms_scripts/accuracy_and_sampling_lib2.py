@@ -387,21 +387,21 @@ def get_write_stratified_accuracies(\
 
     # Write to File
     if accFile != None:
-        accFile.write('Accuracy: '+str(accuracy)+' +/- '+str(accuracy_error)+'\n')
-        accFile.write('Balanced Accuracy: '+str(balanced_accuracy)+'\n')
-        accFile.write('Kappa: '+str(kappa)+'\n')
-        accFile.write('F1 Score: '+str(f1_score)+'\n')
-        accFile.write('Users Accuracy: \n')
+        o = open(accFile,'w')
+        o.write(f'Metric,Value,Confidence\n')
+        o.write(f'Accuracy,{accuracy},{accuracy_error}\n')
+        o.write(f'Balanced Accuracy,{balanced_accuracy},\n')
+        o.write(f'Kappa,{kappa},\n')
+        o.write(f'F1 Score,{f1_score},\n')
         for c in users.keys():
-            accFile.write('Class '+str(class_dict[c])+': '+str(users[c])+' +/- '+str(usersError[c])+'\n')
-        accFile.write('Producers Accuracy: \n')
+            o.write(f'Users Accuracy: {class_dict[c]},{users[c]},{usersError[c]}\n')
+        
         for c in producers.keys():
-            accFile.write('Class '+str(class_dict[c])+': '+str(producers[c])+' +/- '+str(producersError[c])+'\n')
-        accFile.write('Design-Based Area Estimation: \n')
+            o.write(f'Producers Accuracy: {class_dict[c]},{producers[c]},{producersError[c]}\n')
         for c in areas.keys():
-            accFile.write('Class '+str(class_dict[c])+': '+str(areas[c])+' +/- '+str(area_errors[c])+'\n')
+            o.write(f'Design-Based Area Estimation: {class_dict[c]},{areas[c]},{area_errors[c]}\n')
     
-    
+        o.close()
     return accuracy, balanced_accuracy, users, producers, kappa, f1_score, areas, accuracy_error, usersError, producersError, area_errors
 ###################################################
 # Function to get a weighted confusion matrix
