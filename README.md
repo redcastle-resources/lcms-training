@@ -1,17 +1,16 @@
 # LCMS Training
 
-Notebooks to accompany the Google QwikLabs Landscape Change Monitoring System (LCMS) training
+Notebooks to accompany the Google QwikLabs Landscape Change Monitoring System (LCMS) Learning Track
 
 ## Description
 
-These notebooks are intended to be used as part of the Google Quwiklabs LCMS training. They are intended to be run in Vertex AI Workbench, but can also run in Google Colab. They run through the basic workflow of creating LCMS outputs. 
+These notebooks are intended to be used as part of the Google Qwiklabs LCMS Learning Track. They are intended to be run in Vertex AI Workbench, but can also run in Google Colab. They run through the basic workflow of creating LCMS outputs. 
 
 ## Getting Started
 
 ### Dependencies
 
 * A working instance of a Python Notebook. Dependencies within Python are installed when any notebook is run.
-
 
 ## Help
 
