@@ -101,7 +101,7 @@ def population_mean(strataDict, strataYuFrame, metric, multiclass = False):
     denominator_values = []
     for h in strataDict.keys():
         thisStrat = strataYuFrame[strataYuFrame['strata'] == int(h)]
-        N_h_star = np.float(strataDict[h])
+        N_h_star = float(strataDict[h])
         # if isinstance(N_h_star, int):
         #     N_h_star = np.int64(N_h_star)
         n_h_star = len(thisStrat)
@@ -152,7 +152,7 @@ def variance(strataDict, strataYuFrame):
     denominator_values = []
     for h in strataDict.keys():
         thisStrat = strataYuFrame[strataYuFrame['strata'] == int(h)].reset_index()
-        N_h_star = np.float(strataDict[h])
+        N_h_star = float(strataDict[h])
         # if isinstance(N_h_star, int):
         #     N_h_star = np.int64(N_h_star)
         n_h_star = len(thisStrat)
@@ -194,7 +194,7 @@ def users_producers_ratio(strataDict, strataYuFrame, metric):
     denominator_values = []
     for h in strataDict.keys():
         thisStrat = strataYuFrame[strataYuFrame['strata'] == int(h)]
-        N_h_star = np.float(strataDict[h])
+        N_h_star = float(strataDict[h])
         # if isinstance(N_h_star, int):
         #     N_h_star = np.int64(N_h_star)
         n_h_star = len(thisStrat)
